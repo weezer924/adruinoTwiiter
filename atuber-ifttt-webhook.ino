@@ -5,8 +5,8 @@
 #define USERNAME          "sora"
 #define PASSWORD          "sora"
 
-#define WEBHOOK_EVENTNAME "atuber-hungry"
-#define WEBHOOK_KEY       "bTyrqBzgy3ex8csO7FjG5H"
+#define WEBHOOK_EVENTNAME "xxxxxxxxxxx"
+#define WEBHOOK_KEY       "xxxxxxxxxxx"
 #define WEBHOOK_URL       "https://maker.ifttt.com/trigger/"WEBHOOK_EVENTNAME"/with/key/"WEBHOOK_KEY
 
 #define INTERVAL          (1000)
@@ -47,20 +47,19 @@ void send_to_ifttt() {
 
   SerialUSB.print("Count:");
   SerialUSB.print(Count);
-  
+
   char data[100];
   sprintf(data, "{\"value1\":\"%s uptime %lu\"}", twiiterStr, millis() / 1000);
 
-  
+
   int status;
-  
   SerialUSB.println("### Post.");
-  
+
   SerialUSB.print("Post:");
   SerialUSB.print(data);
   SerialUSB.println("");
   SerialUSB.println("### EXE #57");
-  
+
   if (!Wio.HttpPost(WEBHOOK_URL, data, &status)) {
     SerialUSB.println("### ERROR! ###");
     goto err;
@@ -79,10 +78,10 @@ void setup() {
 
   SerialUSB.println("");
   SerialUSB.println("--- START ---------------------------------------------------");
-  
+
   SerialUSB.println("### I/O Initialize.");
   Wio.Init();
-  
+
   SerialUSB.println("### Power supply ON.");
   Wio.PowerSupplyLTE(true);
   delay(500);
@@ -111,5 +110,5 @@ void loop() {
       send_to_ifttt();
     }
     StateChanged = false;
-  } 
+  }
 }
