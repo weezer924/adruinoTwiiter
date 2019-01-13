@@ -9,7 +9,7 @@
 #define WEBHOOK_KEY       "dtiYHqmhyJk3nKx5iNRV3w"
 #define WEBHOOK_URL       "https://maker.ifttt.com/trigger/"WEBHOOK_EVENTNAME"/with/key/"WEBHOOK_KEY
 
-#define INTERVAL          (60000)
+#define INTERVAL          (1000)
 #define BUTTON_PIN  (WIOLTE_D38)
 
 WioLTE Wio;
@@ -26,23 +26,15 @@ void change_state()
 }
 
 char getTwiiterStr(int count) {
-  char data[5] = [
-    'ねぇねぇ,お腹空いた,エサちょうだい〜',
-    'お腹空いた,エサくださいよ〜',
-    'お〜〜〜〜い,お腹すいたよ〜',
-    '誰かエサくれないか〜',
-    'お〜い！エサくれくれ',
-  ];
-
+  char data[] = {'2', '4', '8', '3', '6'};
   return data[count];
 }
 
 void send_to_ifttt() {
   char time[100];
-  
   sprintf(time, "{\"value1\":\"uptime %lu\"}", millis() / 1000);
-  char data = getTwiiterStr(Count);
-  
+
+  char data[] = {getTwiiterStr(Count) ,'x'};
   Count++;
   if(Count == 5) {
     Count = 0;
@@ -56,10 +48,13 @@ void send_to_ifttt() {
   SerialUSB.print("Post:");
   SerialUSB.print(data);
   SerialUSB.println("");
-  if (!Wio.HttpPost(WEBHOOK_URL, data, &status)) {
+  SerialUSB.println("### EXE #50");
+  
+  if (!Wio.HttpPost(WEBHOOK_URL, time, &status)) {
     SerialUSB.println("### ERROR! ###");
     goto err;
   }
+  SerialUSB.println("### EXE #56");
   SerialUSB.print("Status:");
   SerialUSB.println(status);
 
