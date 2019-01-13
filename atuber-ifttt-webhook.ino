@@ -6,7 +6,7 @@
 #define PASSWORD          "sora"
 
 #define WEBHOOK_EVENTNAME "atuber-hungry"
-#define WEBHOOK_KEY       "dtiYHqmhyJk3nKx5iNRV3w"
+#define WEBHOOK_KEY       "bTyrqBzgy3ex8csO7FjG5H"
 #define WEBHOOK_URL       "https://maker.ifttt.com/trigger/"WEBHOOK_EVENTNAME"/with/key/"WEBHOOK_KEY
 
 #define INTERVAL          (1000)
@@ -25,36 +25,47 @@ void change_state()
   delay(150);
 }
 
-char getTwiiterStr(int count) {
-  char data[] = {'2', '4', '8', '3', '6'};
-  return data[count];
-}
-
 void send_to_ifttt() {
-  char time[100];
-  sprintf(time, "{\"value1\":\"uptime %lu\"}", millis() / 1000);
-
-  char data[] = {getTwiiterStr(Count) ,'x'};
   Count++;
-  if(Count == 5) {
+  if(Count == 6) {
     Count = 0;
   }
+
+  char* twiiterArray[]={
+  "ねぇねぇ、お腹空いた、エサちょうだい〜",
+  "お腹空いた、エサくださいよ〜",
+  "お〜〜〜〜い、お腹すいたよ〜",
+  "誰かエサくれないか〜",
+  "お〜い！エサくれくれ",
+  "誰か〜〜、お腹空いたやき"
+  };
+
+  char twiiterStr[100];
+  sprintf(twiiterStr, twiiterArray[Count]);
+  SerialUSB.print("twiiterStr:");
+  SerialUSB.print(twiiterStr);
+
+  SerialUSB.print("Count:");
+  SerialUSB.print(Count);
+  
+  char data[100];
+  sprintf(data, "{\"value1\":\"%s uptime %lu\"}", twiiterStr, millis() / 1000);
+
   
   int status;
-
   
   SerialUSB.println("### Post.");
   
   SerialUSB.print("Post:");
   SerialUSB.print(data);
   SerialUSB.println("");
-  SerialUSB.println("### EXE #50");
+  SerialUSB.println("### EXE #57");
   
-  if (!Wio.HttpPost(WEBHOOK_URL, time, &status)) {
+  if (!Wio.HttpPost(WEBHOOK_URL, data, &status)) {
     SerialUSB.println("### ERROR! ###");
     goto err;
   }
-  SerialUSB.println("### EXE #56");
+  SerialUSB.println("### EXE #63");
   SerialUSB.print("Status:");
   SerialUSB.println(status);
 
